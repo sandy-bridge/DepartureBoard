@@ -1,4 +1,5 @@
-﻿using GTFS;
+﻿using System.IO.Compression;
+using GTFS;
 using GTFS.Entities;
 using GTFS.IO;
 using static System.DateTime;
@@ -30,15 +31,26 @@ async Task<GTFSFeed> DownloadData(string gtfs_uri, bool overwrite = false)
             return reader.Read("gtfs");
         }
     }
-    var httpClient = new HttpClient();
+
+    if (File.Exists("gtfs.zip"))
+    {
+        File.Delete("gtfs.zip");
+    }
     Console.WriteLine("Downloading public transport data.");
-    var httpResult = await httpClient.GetAsync(gtfs_uri);
-    await using var resultStream = await httpResult.Content.ReadAsStreamAsync();
-    await using var fileStream = File.Create("gtfs.zip");
-    resultStream.CopyTo(fileStream);
-    await fileStream.DisposeAsync();
-    System.IO.Compression.ZipFile.ExtractToDirectory("gtfs.zip", "gtfs", true);
+
+    await HttpDownloadAndUnzip(gtfs_uri, "gtfs");
     return reader.Read("gtfs");
+
+    async Task<bool> HttpDownloadAndUnzip(string requestUri, string directoryToUnzip) 
+    {
+        using var response = await new HttpClient().GetAsync(requestUri);
+        if (!response.IsSuccessStatusCode) return false;
+
+        using var streamToReadFrom = await response.Content.ReadAsStreamAsync();
+        using var zip = new ZipArchive(streamToReadFrom);
+        zip.ExtractToDirectory(directoryToUnzip);
+        return true;
+    }
 }
 
 const String GTFS_URI = "https://peatus.ee/gtfs";
