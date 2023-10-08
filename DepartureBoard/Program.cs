@@ -20,17 +20,29 @@ List<string> Get5StopDepartureStrings(GTFSFeed gtfsFeed, int stopId)
     return list;
 }
 
-var httpClient = new HttpClient();
-Console.WriteLine("Downloading public transport data.");
-const string GTFS_URI = "https://peatus.ee/gtfs/gtfs.zip";
-var httpResult = await httpClient.GetAsync(GTFS_URI);
-await using var resultStream = await httpResult.Content.ReadAsStreamAsync();
-await using var fileStream = File.Create("gtfs.zip");
-resultStream.CopyTo(fileStream);
-await fileStream.DisposeAsync();
-var reader = new GTFSReader<GTFSFeed>();
-System.IO.Compression.ZipFile.ExtractToDirectory("gtfs.zip", "gtfs", true);
-var feed = reader.Read("gtfs");
+async Task<GTFSFeed> DownloadData(string gtfs_uri, bool overwrite = false)
+{
+    var reader = new GTFSReader<GTFSFeed>();
+    if (File.Exists("gtfs/feed_info.txt") && overwrite == false)
+    {
+        if (File.GetLastWriteTime("gtfs/feed_info.txt") > Now.AddDays(-7))
+        {
+            return reader.Read("gtfs");
+        }
+    }
+    var httpClient = new HttpClient();
+    Console.WriteLine("Downloading public transport data.");
+    var httpResult = await httpClient.GetAsync(gtfs_uri);
+    await using var resultStream = await httpResult.Content.ReadAsStreamAsync();
+    await using var fileStream = File.Create("gtfs.zip");
+    resultStream.CopyTo(fileStream);
+    await fileStream.DisposeAsync();
+    System.IO.Compression.ZipFile.ExtractToDirectory("gtfs.zip", "gtfs", true);
+    return reader.Read("gtfs");
+}
+
+const String GTFS_URI = "https://peatus.ee/gtfs";
+var feed = await DownloadData(GTFS_URI);
 var test_stop_id = 908;
 Console.WriteLine("Stop ID " + test_stop_id + ": " + feed.Stops.FirstOrDefault(s=> int.Parse(s.Id) == test_stop_id)?.Name);
 var departureStrings = Get5StopDepartureStrings(feed, test_stop_id);
