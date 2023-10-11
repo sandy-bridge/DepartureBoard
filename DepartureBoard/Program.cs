@@ -12,10 +12,11 @@ List<string> Get5StopDepartureStrings(GTFSFeed gtfsFeed, int stopId)
     departures.Sort((a, b) => (int) a.DepartureTime?.CompareTo(b.DepartureTime)!);
     List<String> list = new List<string>();
     foreach (var time in departures.Take(5))
-    {
+    {   
         var trip = gtfsFeed.Trips.FirstOrDefault(t => t.Id == time.TripId);
         var route = gtfsFeed.Routes.FirstOrDefault(r => r.Id == trip?.RouteId);
-        list.Add(String.Format(time.DepartureTime + " " + route?.ShortName + " " + trip?.Headsign));
+        var departureTime = time.DepartureTime?.ToString().Substring(0, 5);
+        list.Add(String.Format(departureTime + " " + route?.ShortName + " " + trip?.Headsign));
     }
 
     return list;
@@ -28,6 +29,7 @@ async Task<GTFSFeed> DownloadData(string gtfs_uri, bool overwrite = false)
     {
         if (File.GetLastWriteTime("gtfs/feed_info.txt") > Now.AddDays(-7))
         {
+            Console.WriteLine("Using existing data.");
             return reader.Read("gtfs");
         }
     }
