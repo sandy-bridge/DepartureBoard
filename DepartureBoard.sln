@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepartureBoard", "Departure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTFSActions", "GTFSActions\GTFSActions.csproj", "{2A0E8529-98B0-4140-9113-6C9BE4BD26DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepartureAPI", "DepartureAPI\DepartureAPI.csproj", "{61E467A1-B0D7-4348-BDB3-9266A250109C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +21,9 @@ Global
 		{2A0E8529-98B0-4140-9113-6C9BE4BD26DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A0E8529-98B0-4140-9113-6C9BE4BD26DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A0E8529-98B0-4140-9113-6C9BE4BD26DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E467A1-B0D7-4348-BDB3-9266A250109C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E467A1-B0D7-4348-BDB3-9266A250109C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E467A1-B0D7-4348-BDB3-9266A250109C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E467A1-B0D7-4348-BDB3-9266A250109C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
