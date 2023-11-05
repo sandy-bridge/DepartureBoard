@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepartureBoard", "DepartureBoard\DepartureBoard.csproj", "{347C7B5F-1FBC-4BEB-8DD9-7C687D0B55DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepartureAPI", "DepartureAPI\DepartureAPI.csproj", "{C48CA3CB-8E51-49B8-8FA8-C0B69490912E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTFSActions", "GTFSActions\GTFSActions.csproj", "{2A0E8529-98B0-4140-9113-6C9BE4BD26DA}"
 EndProject
 Global
@@ -17,10 +15,6 @@ Global
 		{347C7B5F-1FBC-4BEB-8DD9-7C687D0B55DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{347C7B5F-1FBC-4BEB-8DD9-7C687D0B55DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{347C7B5F-1FBC-4BEB-8DD9-7C687D0B55DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C48CA3CB-8E51-49B8-8FA8-C0B69490912E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C48CA3CB-8E51-49B8-8FA8-C0B69490912E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C48CA3CB-8E51-49B8-8FA8-C0B69490912E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C48CA3CB-8E51-49B8-8FA8-C0B69490912E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A0E8529-98B0-4140-9113-6C9BE4BD26DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A0E8529-98B0-4140-9113-6C9BE4BD26DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A0E8529-98B0-4140-9113-6C9BE4BD26DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
