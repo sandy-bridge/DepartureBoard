@@ -2,8 +2,41 @@
 using GTFS;
 using GTFS.Entities;
 using static System.DateTime;
+using System.IO.Compression;
 public class GTFSActions
 {
+    public static async Task<GTFSFeed> DownloadData(string gtfs_uri, bool overwrite = false)
+    {
+        var reader = new GTFSReader<GTFSFeed>();
+        if (File.Exists("gtfs/feed_info.txt") && overwrite == false)
+        {
+            if (File.GetLastWriteTime("gtfs/feed_info.txt") > Now.AddDays(-7))
+            {
+                Console.WriteLine("Using existing data.");
+                return reader.Read("gtfs");
+            }
+        }
+
+        if (File.Exists("gtfs.zip"))
+        {
+            File.Delete("gtfs.zip");
+        }
+        Console.WriteLine("Downloading public transport data.");
+
+        await HttpDownloadAndUnzip(gtfs_uri, "gtfs");
+        return reader.Read("gtfs");
+
+        async Task<bool> HttpDownloadAndUnzip(string requestUri, string directoryToUnzip)
+        {
+            using var response = await new HttpClient().GetAsync(requestUri);
+            if (!response.IsSuccessStatusCode) return false;
+
+            using var streamToReadFrom = await response.Content.ReadAsStreamAsync();
+            using var zip = new ZipArchive(streamToReadFrom);
+            zip.ExtractToDirectory(directoryToUnzip);
+            return true;
+        }
+    }
     public static List<string> Get5StopDepartureStrings(GTFSFeed gtfsFeed, int stopId)
     {
         var departures = gtfsFeed.StopTimes.GetForStop(stopId.ToString())
