@@ -19,12 +19,10 @@ app.UseHttpsRedirection();
 const string GTFS_URI = "https://peatus.ee/gtfs/gtfs.zip";
 var feed = await GTFSActions.GTFSActions.DownloadData(GTFS_URI);
 
-app.MapGet("/stopdepatures", () =>
+app.MapGet("/stopdepatures/{stopId}", (int stopId) =>
 {
-    var test_stop_id = 908;
-    var list = GTFSActions.GTFSActions.Get5StopDepartureStrings(feed, test_stop_id);
+    var list = GTFSActions.GTFSActions.Get5StopDepartureStrings(feed, stopId);
     return list;
-})
-.WithName("GetStopDepartures");
+});
 
 app.Run();
