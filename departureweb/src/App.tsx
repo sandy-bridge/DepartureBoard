@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Stack, Text, Link, FontWeights, IStackTokens, IStackStyles, ITextStyles } from '@fluentui/react';
+import { Stack, Text, Link, FontWeights, IStackTokens, IStackStyles, ITextStyles, ThemeProvider } from '@fluentui/react';
 import logo from './logo.svg';
 import './App.css';
 import DepartureList from './DepartureList';
@@ -19,6 +19,7 @@ const stackStyles: Partial<IStackStyles> = {
 export const App: React.FunctionComponent = () => {
   const [departures, setDepartures] = useState([{ id: 1, name: "Todo Item 1" }, { id: 2, name: "Todo Item 2" }]);
   return (
+    <ThemeProvider >
     <div className="wrapper">
       <Stack horizontalAlign="center">
         <h1>Departures</h1>
@@ -27,5 +28,6 @@ export const App: React.FunctionComponent = () => {
         </Stack>
       </Stack>
     </div>
+    </ThemeProvider>
   );
 };
