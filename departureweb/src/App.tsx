@@ -3,6 +3,7 @@ import { Stack, Text, Link, FontWeights, IStackTokens, IStackStyles, ITextStyles
 import logo from './logo.svg';
 import './App.css';
 import DepartureList from './DepartureList';
+import EnterStop from './EnterStop';
 
 
 const boldStyle: Partial<ITextStyles> = { root: { fontWeight: FontWeights.semibold } };
@@ -24,6 +25,7 @@ export const App: React.FunctionComponent = () => {
       <Stack horizontalAlign="center">
         <h1>Departures</h1>
         <Stack style={{ width: 300 }} gap={25}>
+          <EnterStop />
           <DepartureList departures={departures} />
         </Stack>
       </Stack>
