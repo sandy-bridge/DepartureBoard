@@ -21,6 +21,10 @@ public class GTFSActions
         {
             File.Delete("gtfs.zip");
         }
+        if (Directory.Exists("gtfs"))
+        {
+            Directory.Delete("gtfs");
+        }
         Console.WriteLine("Downloading public transport data.");
 
         await HttpDownloadAndUnzip(gtfs_uri, "gtfs");
