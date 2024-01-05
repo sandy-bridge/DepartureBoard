@@ -1,66 +1,25 @@
-import React, { useState } from 'react';
-import { Stack, TextField, PrimaryButton, FontWeights, IStackTokens, IStackStyles, ITextStyles, ThemeProvider, Label } from '@fluentui/react';
+import React from 'react';
+import logo from './logo.svg';
 import './App.css';
-import DepartureList from './DepartureList';
+import { useStop } from './api/departure';
 
-import {
-  useQuery,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+function App() {
+  const { isLoading, error, data } = useStop();
 
-interface Departures {
-  stopName: string;
-  departures: Array<string>
+  if (isLoading) return (
+  <div className="App">
+    <h2>Loading</h2>
+  </div>
+  );
+  if (error) console.log('An error occurred while fetching the user data ', error);
+  return (
+    <div className="App">
+      <div>
+      <h1>{data?.stopName}</h1>
+      <p>{data?.departures}</p>
+    </div>
+    </div>
+  );
 }
 
-const boldStyle: Partial<ITextStyles> = { root: { fontWeight: FontWeights.semibold } };
-const stackTokens: IStackTokens = { childrenGap: 15 };
-const stackStyles: Partial<IStackStyles> = {
-  root: {
-    width: '960px',
-    margin: '0 auto',
-    textAlign: 'center',
-    color: '#605e5c',
-  },
-};
-const queryClient = new QueryClient()
-
-export const App: React.FunctionComponent = () => {
-  const queryClient = useQueryClient()
-  let stopID: string = "908";
-  const [departures, setDepartures] = useState([{ id: 1, name: "Todo Item 1" }, { id: 2, name: "Todo Item 2" }]);
-  const query = useQuery(['departures', stopID], async () => {
-    const response = await fetch('http://localhost:7169/stopdepartures/' + stopID);
-    if (!response.ok) {
-      throw new Error('Network error');
-    }
-    return response.json();
-  })
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider >
-        <div className="wrapper">
-          <Stack horizontalAlign="center">
-            <h1>Departures</h1>
-            <Stack style={{ width: 300 }} gap={25}>
-              <Stack>
-                <Stack horizontal >
-                  <Stack.Item grow>
-                    <TextField placeholder="Stop ID" value={stopID} />
-                  </Stack.Item>
-                  <PrimaryButton >Enter</PrimaryButton>
-                </Stack>
-              </Stack>
-              <Stack gap={10} >{query.data.departures.map((departure: string) =>
-                <Stack><Label>{departure}</Label></Stack>
-              )}
-              </Stack>
-            </Stack>
-          </Stack>
-        </div>
-      </ThemeProvider>
-    </QueryClientProvider>
-  );
-};
+export default App;
