@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { useStop } from './api/departure';
 
@@ -12,12 +11,11 @@ function App() {
   </div>
   );
   if (error) console.log('An error occurred while fetching the user data ', error);
+  const departures = data?.departures.map((departure: string) => <li>{departure}</li>)
   return (
     <div className="App">
-      <div>
       <h1>{data?.stopName}</h1>
-      <p>{data?.departures}</p>
-    </div>
+      <ul>{departures}</ul>
     </div>
   );
 }
