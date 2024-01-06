@@ -3,6 +3,8 @@ import './App.css';
 import { useStop } from './api/departure';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Stack from '@mui/material/Stack';
+import Container from '@mui/material/Container';
 
 function App() {
   const { isLoading, error, data } = useStop();
@@ -15,12 +17,14 @@ function App() {
   if (error) console.log('An error occurred while fetching the user data ', error);
   const departures = data?.departures.map((departure: string) => <ListItem>{departure}</ListItem>)
   return (
-    <div className="App">
+    <Container maxWidth="sm">
+      <Stack spacing={2}>
       <h1>{data?.stopName}</h1>
       <List>
         {departures}
       </List>
-    </div>
+      </Stack>
+    </Container>
   );
 }
 
