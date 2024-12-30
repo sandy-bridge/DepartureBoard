@@ -57,6 +57,7 @@ public class GTFSActions
         while(departureQueueList.Any(s => s.Count > 0)){
             combinedList.Add(departureQueueList.Aggregate((curMin, x) => (curMin == null || (x.Peek().DepartureTime) <
     curMin.Peek().DepartureTime ? x : curMin)).Dequeue());
+            departureQueueList.RemoveAll(q => q.Count == 0);
         }
         List<String> list = new List<string>();
         foreach (var time in combinedList.Take(n))
