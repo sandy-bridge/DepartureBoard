@@ -46,21 +46,27 @@ public class GTFSActions
     }
     private static bool CheckTripDate (GTFSFeed feed, string trip)
     {
-        if(feed.Calendars.First(c => c.ServiceId == feed.Trips.Get(trip).ServiceId).CoversDate(Today) && feed.Calendars.First(c => c.ServiceId == feed.Trips.Get(trip).ServiceId).ContainsDay(Now.DayOfWeek))
+        Console.WriteLine("Checking trip " + trip);
+        var tripServiceId = feed.Trips.Get(trip).ServiceId;
+        var calendar = feed.Calendars.First(c => c.ServiceId == tripServiceId);
+        var calendarDate = feed.CalendarDates.FirstOrDefault(c => c.Date == Today && c.ServiceId == tripServiceId);
+
+        if (calendar.CoversDate(Today) && calendar.ContainsDay(Now.DayOfWeek))
         {
-            if(feed.CalendarDates.FirstOrDefault(c => c.Date == Today && c.ServiceId == feed.Trips.Get(trip).ServiceId)?.ExceptionType == GTFS.Entities.Enumerations.ExceptionType.Removed)
+            if (calendarDate?.ExceptionType == GTFS.Entities.Enumerations.ExceptionType.Removed)
             {
+                Console.WriteLine("Excluded trip " + trip + " based on exception");
                 return false;
             }
-            else return true;
+            return true;
         }
-        if(feed.CalendarDates.FirstOrDefault(c => c.Date == Today && c.ServiceId == feed.Trips.Get(trip).ServiceId)?.ExceptionType == GTFS.Entities.Enumerations.ExceptionType.Added)
+
+        else if (calendarDate?.ExceptionType == GTFS.Entities.Enumerations.ExceptionType.Added)
         {
             return true;
         }
-        else {
-            return false;
-        }
+        Console.WriteLine("Excluded trip " + trip + " based on calendar");
+        return false;
     }
     public static List<string> GetMultipleStopsDepartureStrings (GTFSFeed gtfsFeed, List<int> stops, int n=5)
     {
